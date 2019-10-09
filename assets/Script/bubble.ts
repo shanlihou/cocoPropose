@@ -15,6 +15,12 @@ export default class Bubble extends cc.Component {
 
     @property(cc.SpriteFrame)
     otherFrame: cc.SpriteFrame = null;
+
+    @property(cc.SpriteFrame)
+    cornerMe: cc.SpriteFrame = null;
+
+    @property(cc.SpriteFrame)
+    cornerOther: cc.SpriteFrame = null;
     
     private _maxWidth = 100;
     private _isMe = true;
@@ -37,6 +43,25 @@ export default class Bubble extends cc.Component {
         this.node.width = labelNode.width + 10;
         this.node.height = labelNode.height + 10;
         this.node.on('click', this.onClickMe, this);
+
+        this.autoCorner();
+    }
+
+    private autoCorner() {
+        let corner = cc.find('corner', this.node);
+        let cornerSprite = corner.getComponent(cc.Sprite);
+        corner.y = this.node.y - 5;
+        let cornerWidth = corner.width * corner.scaleX;
+
+        if (this._isMe){
+            corner.x = (this.node.width + cornerWidth) / 2;
+            corner.scaleX = -corner.scaleX;
+            cornerSprite.spriteFrame = this.cornerMe;
+        }
+        else {
+            corner.x = -this.node.width / 2 - cornerWidth / 2;
+            cornerSprite.spriteFrame = this.cornerOther;
+        }
     }
 
     public onClickMe() {
