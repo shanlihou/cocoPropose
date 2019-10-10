@@ -26,13 +26,26 @@ export default class NewClass extends cc.Component {
     start () {
         this._vX = cc.view.getVisibleSize().width;
         this._vY = cc.view.getVisibleSize().height;
+
         let sfs = this.heads.getSpriteFrames();
+        let spaceBetween = 10;
         for (let i = 0; i < sfs.length; i++) {
             let sf = sfs[i];
             let headNode = this.createHead(sf);
             this.node.addChild(headNode);
-            headNode.height = this._vY / 6;
-            headNode.y = headNode.height * i;
+            headNode.height = this._vY / 6 - spaceBetween;
+            headNode.width = headNode.height;
+
+            let row = Math.round(i / 2);
+            headNode.y = headNode.height * row - this._vY / 2;
+
+            let col = i % 2;
+            if (col == 0) {
+                headNode.x = -(this._vX - headNode.width) / 2;
+            }
+            else {
+                headNode.x = (this._vX - headNode.width) / 2;
+            }
         }
     }
 
