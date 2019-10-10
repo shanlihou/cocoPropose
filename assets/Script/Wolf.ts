@@ -15,6 +15,12 @@ export default class NewClass extends cc.Component {
 
     @property(cc.SpriteAtlas)
     heads: cc.SpriteAtlas = null;
+    
+    @property(cc.SpriteFrame)
+    sf2: cc.SpriteFrame = null;
+
+    @property(cc.Prefab)
+    bubblePrefab: cc.Prefab = null;
 
     private _vX;
     private _vY;
@@ -28,16 +34,19 @@ export default class NewClass extends cc.Component {
         this._vY = cc.view.getVisibleSize().height;
 
         let sfs = this.heads.getSpriteFrames();
-        let spaceBetween = 10;
+        let spaceBetween = 40;
         for (let i = 0; i < sfs.length; i++) {
             let sf = sfs[i];
+            if (i == 8) {
+                sf = this.sf2;
+            }
             let headNode = this.createHead(sf);
             this.node.addChild(headNode);
             headNode.height = this._vY / 6 - spaceBetween;
             headNode.width = headNode.height;
 
-            let row = Math.round(i / 2);
-            headNode.y = headNode.height * row - this._vY / 2;
+            let row = Math.round((i + 1) / 2);
+            headNode.y = (this._vY / 6) * row - (this._vY + headNode.height + spaceBetween) / 2;
 
             let col = i % 2;
             if (col == 0) {
@@ -46,6 +55,7 @@ export default class NewClass extends cc.Component {
             else {
                 headNode.x = (this._vX - headNode.width) / 2;
             }
+            console.log(i, col, row, headNode)
         }
     }
 

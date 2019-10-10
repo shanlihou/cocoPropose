@@ -245,6 +245,12 @@
     "heads": {
       "__uuid__": "90e89928-387f-4805-9702-a53b3fe2eed3"
     },
+    "sf2": {
+      "__uuid__": "2bd18a67-4438-4478-8f27-3acd7deb451c"
+    },
+    "bubblePrefab": {
+      "__uuid__": "8d41845f-28e8-4d07-85fb-1ce1003be393"
+    },
     "_id": "017vmli2NB+a3Kj7vbTKRZ"
   }
 ]
