@@ -10,20 +10,32 @@
 
 const {ccclass, property} = cc._decorator;
 
+const MESSAGE1 = [
+    '我欠你132顿海底捞',
+    ''
+]
+
 @ccclass
 export default class NewClass extends cc.Component {
-
     @property(cc.SpriteAtlas)
     heads: cc.SpriteAtlas = null;
     
     @property(cc.SpriteFrame)
     sf2: cc.SpriteFrame = null;
 
+    @property(cc.SpriteFrame)
+    nightFrame: cc.SpriteFrame = null;
+    
+    @property(cc.SpriteFrame)
+    dayFrame: cc.SpriteFrame = null;
+
     @property(cc.Prefab)
     bubblePrefab: cc.Prefab = null;
 
     private _vX;
     private _vY;
+    private _heads:Array<cc.Node> = [];
+    private _bubbles: Array<cc.Node> = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -32,9 +44,11 @@ export default class NewClass extends cc.Component {
     start () {
         this._vX = cc.view.getVisibleSize().width;
         this._vY = cc.view.getVisibleSize().height;
+        this.setBack(false);
 
         let sfs = this.heads.getSpriteFrames();
         let spaceBetween = 40;
+        let that = this;
         for (let i = 0; i < sfs.length; i++) {
             let sf = sfs[i];
             if (i == 8) {
@@ -55,8 +69,48 @@ export default class NewClass extends cc.Component {
             else {
                 headNode.x = (this._vX - headNode.width) / 2;
             }
+
+            this._heads.push(headNode);
             console.log(i, col, row, headNode)
+            headNode.on(cc.Node.EventType.TOUCH_START, ()=>{
+                that.onClick(i);
+            });
         }
+
+    }
+
+    private setBack(isDay) {
+        let back = cc.find('background', this.node);
+        let backSprite = back.addComponent(cc.Sprite);
+        backSprite.spriteFrame = isDay ? this.dayFrame : this.nightFrame;
+        back.width = this._vX;
+        back.height = this._vY;
+    }
+
+    private onClick(index) {
+        console.log('on click', index)
+    }
+
+    private addBubble(index, isMe, text) {
+        let bubble = cc.instantiate(this.bubblePrefab);
+        let ctrl = bubble.getComponent("bubble");
+        if (!isMe)
+            ctrl.setOther();
+
+        ctrl.setFrame(false);
+        ctrl.setText(text);
+        bubble.opacity = 0;
+        this.node.addChild(bubble);
+
+        let head = this._heads[index];
+        bubble.y = head.y;
+        if (index % 2 == 0){
+            bubble.x = head.x + (head.width * head.scaleX + bubble.width * bubble.scaleX) / 2 + 20;
+        }
+        else {
+            bubble.x = head.x - (head.width * head.scaleX + bubble.width * bubble.scaleX) / 2 - 20;
+        }
+        bubble.runAction(cc.fadeIn(1.0));
     }
 
     private createHead(frame) {

@@ -17,6 +17,9 @@ export default class Bubble extends cc.Component {
     otherFrame: cc.SpriteFrame = null;
 
     @property(cc.SpriteFrame)
+    myFrame: cc.SpriteFrame = null;
+
+    @property(cc.SpriteFrame)
     cornerMe: cc.SpriteFrame = null;
 
     @property(cc.SpriteFrame)
@@ -49,19 +52,25 @@ export default class Bubble extends cc.Component {
 
     private autoCorner() {
         let corner = cc.find('corner', this.node);
-        let cornerSprite = corner.getComponent(cc.Sprite);
         corner.y = this.node.y - 5;
         let cornerWidth = corner.width * corner.scaleX;
 
         if (this._isMe){
             corner.x = (this.node.width + cornerWidth) / 2;
             corner.scaleX = -corner.scaleX;
-            cornerSprite.spriteFrame = this.cornerMe;
         }
         else {
             corner.x = -this.node.width / 2 - cornerWidth / 2;
-            cornerSprite.spriteFrame = this.cornerOther;
         }
+    }
+
+    public setFrame(isMe) {
+        let sprite: cc.Sprite = this.node.getComponent(cc.Sprite);
+        sprite.spriteFrame = isMe ? this.myFrame : this.otherFrame ;
+
+        let corner = cc.find('corner', this.node);
+        let cornerSprite = corner.getComponent(cc.Sprite);
+        cornerSprite.spriteFrame = isMe ? this.cornerMe : this.cornerOther;
     }
 
     public onClickMe() {
@@ -72,6 +81,10 @@ export default class Bubble extends cc.Component {
         this._isMe = false;
         let sprite: cc.Sprite = this.node.getComponent(cc.Sprite);
         sprite.spriteFrame = this.otherFrame;
+
+        let corner = cc.find('corner', this.node);
+        let cornerSprite = corner.getComponent(cc.Sprite);
+        cornerSprite.spriteFrame = this._isMe ? this.cornerMe : this.cornerOther;
     }
 
     start () {
