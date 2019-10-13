@@ -17,6 +17,12 @@ const MESSAGE1 = [
 
 @ccclass
 export default class NewClass extends cc.Component {
+    @property(cc.Prefab)
+    qiubiPrefab: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    narratorPrefab: cc.Prefab = null;
+
     @property(cc.SpriteAtlas)
     heads: cc.SpriteAtlas = null;
     
@@ -77,6 +83,16 @@ export default class NewClass extends cc.Component {
             });
         }
 
+        // this.addNarrator('天黑请闭眼', ()=>{
+        //     that.addNarrator('丘比特请连人', ()=>{
+        //     })
+        // })
+                let qiubi = cc.instantiate(this.qiubiPrefab)
+                let qiubiSc = qiubi.getComponent("Qiubi");
+                qiubiSc.init(this.node);
+                qiubi.x = 0;
+                qiubi.y = 0;
+                that.node.addChild(qiubi);
     }
 
     private setBack(isDay) {
@@ -118,6 +134,13 @@ export default class NewClass extends cc.Component {
         let sp = newNode.addComponent(cc.Sprite);
         sp.spriteFrame = frame;
         return newNode;
+    }
+
+    private addNarrator(text, func) {
+        let narrator = cc.instantiate(this.narratorPrefab);
+        let ns = narrator.getComponent("Narrator");
+        ns.init(text, this._vX, this._vY, 2.0, func);
+        this.node.addChild(narrator);
     }
 
     // update (dt) {}
