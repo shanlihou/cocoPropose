@@ -57,6 +57,7 @@ export default class NewClass extends cc.Component {
 
         newVec.normalizeSelf()
         arrow.setPosition(newVec.mul(-50));
+        arrow.runAction(cc.moveBy(2, newVec.mul(-500)));
     }
 
     private addArrow(angle) {

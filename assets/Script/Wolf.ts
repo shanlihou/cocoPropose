@@ -51,6 +51,7 @@ export default class NewClass extends cc.Component {
         this._vX = cc.view.getVisibleSize().width;
         this._vY = cc.view.getVisibleSize().height;
         this.setBack(false);
+        cc.director.getPhysicsManager().enabled = true;
 
         let sfs = this.heads.getSpriteFrames();
         let spaceBetween = 40;
@@ -132,6 +133,9 @@ export default class NewClass extends cc.Component {
     private createHead(frame) {
         let newNode = new cc.Node();
         let sp = newNode.addComponent(cc.Sprite);
+        newNode.addComponent(cc.BoxCollider);
+        let rig = newNode.addComponent(cc.RigidBody);
+        rig.gravityScale = 0;
         sp.spriteFrame = frame;
         return newNode;
     }
