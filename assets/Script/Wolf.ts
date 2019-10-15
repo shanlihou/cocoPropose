@@ -21,6 +21,9 @@ export default class NewClass extends cc.Component {
     qiubiPrefab: cc.Prefab = null;
 
     @property(cc.Prefab)
+    headPrefab: cc.Prefab = null;
+
+    @property(cc.Prefab)
     narratorPrefab: cc.Prefab = null;
 
     @property(cc.SpriteAtlas)
@@ -38,10 +41,19 @@ export default class NewClass extends cc.Component {
     @property(cc.Prefab)
     bubblePrefab: cc.Prefab = null;
 
+    @property(cc.Node)
+    leftHeart:cc.Node = null;
+
+    @property(cc.Node)
+    rightHeart:cc.Node = null;
+
     private _vX;
     private _vY;
     private _heads:Array<cc.Node> = [];
     private _bubbles: Array<cc.Node> = [];
+    private isLeftHeart = false;
+    private isRightHeart = false;
+    private _qiubi:cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -61,21 +73,40 @@ export default class NewClass extends cc.Component {
             if (i == 8) {
                 sf = this.sf2;
             }
+            else if (i == 6) {
+                sf = sfs[10];
+            }
+            else if (i == 10) {
+                sf = sfs[6];
+            }
+            else if (i == 7) {
+                sf = sfs[11];
+            }
+            else if (i == 11) {
+                sf = sfs[7];
+            }
             let headNode = this.createHead(sf);
+            headNode['indexI'] = i;
             this.node.addChild(headNode);
             headNode.height = this._vY / 6 - spaceBetween;
             headNode.width = headNode.height;
 
+            let box = headNode.getComponent(cc.PhysicsBoxCollider);
+            box.size.width = headNode.width;
+            box.size.height = headNode.height;
+
             let row = Math.round((i + 1) / 2);
-            headNode.y = (this._vY / 6) * row - (this._vY + headNode.height + spaceBetween) / 2;
+            let y = (this._vY / 6) * row - (this._vY + headNode.height + spaceBetween) / 2;
+            let x = 0;
 
             let col = i % 2;
             if (col == 0) {
-                headNode.x = -(this._vX - headNode.width) / 2;
+                x = -(this._vX - headNode.width) / 2;
             }
             else {
-                headNode.x = (this._vX - headNode.width) / 2;
+                x = (this._vX - headNode.width) / 2;
             }
+            headNode.setPosition(cc.v2(x, y));
 
             this._heads.push(headNode);
             console.log(i, col, row, headNode)
@@ -88,12 +119,12 @@ export default class NewClass extends cc.Component {
         //     that.addNarrator('丘比特请连人', ()=>{
         //     })
         // })
-                let qiubi = cc.instantiate(this.qiubiPrefab)
-                let qiubiSc = qiubi.getComponent("Qiubi");
+                this._qiubi = cc.instantiate(this.qiubiPrefab)
+                let qiubiSc = this._qiubi.getComponent("Qiubi");
                 qiubiSc.init(this.node);
-                qiubi.x = 0;
-                qiubi.y = 0;
-                that.node.addChild(qiubi);
+                this._qiubi.x = 0;
+                this._qiubi.y = 0;
+                that.node.addChild(this._qiubi);
     }
 
     private setBack(isDay) {
@@ -130,12 +161,31 @@ export default class NewClass extends cc.Component {
         bubble.runAction(cc.fadeIn(1.0));
     }
 
+    public onArrow(indexI) {
+        console.log('on arrow:', indexI)
+        if (indexI == 6) {
+            this.leftHeart.opacity = 255;
+            this.isLeftHeart = true;
+        }
+        else if (indexI == 7) {
+            this.rightHeart.opacity = 255;
+            this.isRightHeart = true;
+        }
+
+        if (this.isLeftHeart && this.isRightHeart) {
+            this._qiubi.destroy();
+            let that = this;
+            this.addNarrator('恭喜应彬与陈科争成为恋人', ()=>{
+                that.addNarrator('天亮了', ()=>{
+
+                })
+            })
+        }
+    }
+
     private createHead(frame) {
-        let newNode = new cc.Node();
-        let sp = newNode.addComponent(cc.Sprite);
-        newNode.addComponent(cc.BoxCollider);
-        let rig = newNode.addComponent(cc.RigidBody);
-        rig.gravityScale = 0;
+        let newNode = cc.instantiate(this.headPrefab);
+        let sp = newNode.getComponent(cc.Sprite);
         sp.spriteFrame = frame;
         return newNode;
     }

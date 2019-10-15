@@ -15,6 +15,7 @@ export default class NewClass extends cc.Component {
 
 
     // onLoad () {}
+    private _father:cc.Node = null;
 
     start () {
         console.log('im in arrow start')
@@ -24,8 +25,16 @@ export default class NewClass extends cc.Component {
         }, 3)
     }
     onBeginContact(contact, self, other) {
-        console.log('contact', contact, self, other)
-        this.node.destroy();
+        let indexI = other.node.indexI;
+        if (indexI == 6 || indexI == 7) {
+            this.node.destroy();
+            let wolfcs = this._father.getComponent('Wolf');
+            wolfcs.onArrow(indexI);
+        }
+    }
+
+    setFather(father) {
+        this._father = father;
     }
 
 

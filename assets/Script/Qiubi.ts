@@ -62,6 +62,8 @@ export default class NewClass extends cc.Component {
 
     private addArrow(angle) {
         let arrow = cc.instantiate(this.arrowPrefab);
+        let arrowcs = arrow.getComponent('Arrow');
+        arrowcs.setFather(this._father);
         arrow.width = 50;
         arrow.height = 50;
         arrow.angle = -(angle - 45);
