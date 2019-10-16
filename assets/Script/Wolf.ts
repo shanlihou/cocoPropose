@@ -170,7 +170,7 @@ export default class NewClass extends cc.Component {
     private headDead(index) {
         let headNode = this._heads[index];
         let sp = headNode.getComponent(cc.Sprite);
-        sp.spriteFrame = ;
+        sp.spriteFrame = null;
     }
 
     public onArrow(indexI) {
@@ -190,13 +190,35 @@ export default class NewClass extends cc.Component {
             this.addNarrator('恭喜应彬与陈科争成为恋人', ()=>{
                 that.addNarrator('天亮了', ()=>{
                     that.addNarrator('昨晚1,2,3,5号玩家死亡', ()=>{
-                        that.addNarrator('请5号玩家发动技能', ()=>{
-
-                        })
+                        that.headDead(0);
+                        that.headDead(1);
+                        that.headDead(2);
+                        that.headDead(4);
+                        that.scheduleOnce(()=>{
+                            that.addNarrator('请5号玩家发动技能', ()=>{
+                                this.scheduleOnce(()=>{
+                                    that.addBubble(4, false, '带走4号')
+                                    this.scheduleOnce(()=>{
+                                        that.onArrow2();
+                                    }, 1)
+                                }, 1)
+                            })
+                        }, 2)
                     })
                 })
             })
         }
+    }
+
+    private onArrow2() {
+        let that = this;
+        this.headDead(3);
+        this.scheduleOnce(()=>{
+            that.addBubble(11, true, '我是骑士，撞10号')
+            that.scheduleOnce(()=>{
+                that.headDead(9);
+            }, 1)
+        }, 1)
     }
 
     private createHead(frame) {
