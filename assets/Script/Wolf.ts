@@ -140,6 +140,11 @@ export default class NewClass extends cc.Component {
     }
 
     private addBubble(index, isMe, text) {
+        if (index in this._bubbles){
+            this._bubbles[index].destroy();
+            delete this._bubbles[index];
+        }
+
         let bubble = cc.instantiate(this.bubblePrefab);
         let ctrl = bubble.getComponent("bubble");
         if (!isMe)
@@ -159,6 +164,13 @@ export default class NewClass extends cc.Component {
             bubble.x = head.x - (head.width * head.scaleX + bubble.width * bubble.scaleX) / 2 - 20;
         }
         bubble.runAction(cc.fadeIn(1.0));
+        this._bubbles[index] = bubble;
+    }
+
+    private headDead(index) {
+        let headNode = this._heads[index];
+        let sp = headNode.getComponent(cc.Sprite);
+        sp.spriteFrame = ;
     }
 
     public onArrow(indexI) {
@@ -177,7 +189,11 @@ export default class NewClass extends cc.Component {
             let that = this;
             this.addNarrator('恭喜应彬与陈科争成为恋人', ()=>{
                 that.addNarrator('天亮了', ()=>{
+                    that.addNarrator('昨晚1,2,3,5号玩家死亡', ()=>{
+                        that.addNarrator('请5号玩家发动技能', ()=>{
 
+                        })
+                    })
                 })
             })
         }
