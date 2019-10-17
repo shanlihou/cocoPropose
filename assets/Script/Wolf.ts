@@ -217,6 +217,29 @@ export default class NewClass extends cc.Component {
             that.addBubble(11, true, '我是骑士，撞10号')
             that.scheduleOnce(()=>{
                 that.headDead(9);
+                that.scheduleOnce(()=>{
+                    that.addNarrator('游戏结束，恋人胜利', ()=>{
+                        that.addNarrator('下面为复盘时间', ()=>{
+                            that.scheduleOnce(()=>{
+                                that.onArrow3();
+                            }, 1)
+                        })
+                    })
+                }, 1)
+            }, 1)
+        }, 1)
+    }
+
+    private onArrow3() {
+        let that = this;
+        this.addBubble(0, false, '我是女巫，昨晚毒了2号');
+        this.scheduleOnce(()=>{
+            that.addBubble(1, true, '我是狼美人，昨晚连了3号');
+            that.scheduleOnce(()=>{
+                that.addBubble(3, true, '我是大野狼，昨晚单独开刀，刀了5号');
+                that.scheduleOnce(()=>{
+                    that.addBubble(9, true, '我是普狼，昨夜狼队刀掉1号')
+                }, 1)
             }, 1)
         }, 1)
     }
