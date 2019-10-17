@@ -495,12 +495,21 @@
     "sf2": {
       "__uuid__": "2bd18a67-4438-4478-8f27-3acd7deb451c"
     },
+    "deadFrame": {
+      "__uuid__": "233dce46-8aa3-4c04-90b1-64d5fe2e8669"
+    },
     "nightFrame": {
       "__uuid__": "35e701e5-c8f5-461a-bf7e-feba83af427e"
     },
     "dayFrame": null,
     "bubblePrefab": {
       "__uuid__": "8d41845f-28e8-4d07-85fb-1ce1003be393"
+    },
+    "danxiPrefab": {
+      "__uuid__": "c0bfa5c0-4bf4-43e9-a522-5627a8236ad3"
+    },
+    "saPrefab": {
+      "__uuid__": "4e2586cf-76f9-4997-af81-942c903d3136"
     },
     "leftHeart": {
       "__id__": 6

@@ -21,6 +21,10 @@ export default class NewClass extends cc.Component {
     private _vY = 0;
 
     start () {
+        let audioNode = cc.find('Audio');
+        let audioCs = audioNode.getComponent('Audio');
+        audioCs.playBgMusic();
+
         this._vX = cc.view.getVisibleSize().width;
         this._vY = cc.view.getVisibleSize().height;
         this.addNarrator('从前我的生活只有黑与白', ()=>{

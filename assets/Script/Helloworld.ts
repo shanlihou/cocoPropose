@@ -128,7 +128,7 @@ export default class Helloworld extends cc.Component {
 
         fetchMessage(0);
 
-        this.schedule(fetchMessage, 1);
+        this.schedule(fetchMessage, 2);
     }
 
     private oceanEnd() {
